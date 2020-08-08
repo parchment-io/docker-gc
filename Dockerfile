@@ -1,12 +1,12 @@
+ARG DOCKER_VERSION=19.03
+
+FROM docker:$DOCKER_VERSION AS docker
+
 FROM alpine:3.10
 
-ENV DOCKER_VERSION 18.09.6
+COPY --from=docker /usr/local/bin/docker /usr/local/bin/docker
 
-RUN apk --no-cache add bash \
-  && wget -q https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz \
-  && tar zxf docker-${DOCKER_VERSION}.tgz \
-  && mv docker/docker /usr/local/bin/ \
-  && rm -rf docker/ docker-${DOCKER_VERSION}.tgz
+RUN apk --no-cache add bash
 
 COPY ./docker-gc /docker-gc
 
